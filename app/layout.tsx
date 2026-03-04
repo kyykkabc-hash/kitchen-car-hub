@@ -1,5 +1,5 @@
 import React from 'react';
-
+import './globals.css';
 export const metadata = {
   title: 'KITCHEN CAR HUB',
   description: 'キッチンカー出店募集情報検索サイト',
