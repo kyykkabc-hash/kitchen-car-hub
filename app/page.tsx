@@ -1,7 +1,7 @@
 "use client";
 // app/page.tsx
 import Link from "next/link";// app/page.tsx
-import Link from "next/link";
+
 
 type TruckSize = "軽" | "1.5t" | "2t" | "3t";
 
