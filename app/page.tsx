@@ -205,12 +205,12 @@ function TruckBadge({ size }: { size: TruckSize }) {
   );
 }
 
-export default async function Page({
+export default function Page({
   searchParams,
 }: {
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+  searchParams?:<Record<string, string | string[] | undefined>>;
 }) {
-  const sp = (await searchParams) ?? {};
+  const sp = (searchParams) ?? {};
 
   // クエリ取得：?prefecture=東京
   const prefecture =
