@@ -211,7 +211,7 @@ export default function Page({
   searchParams?: Record<string, string | string[] | undefined>;
 }) {
   const sp = searchParams ?? {};
-
+  
   // クエリ取得：?prefecture=東京
   const prefecture =
     typeof sp.prefecture === "string" ? sp.prefecture : undefined;
