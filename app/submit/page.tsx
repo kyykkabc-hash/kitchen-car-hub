@@ -39,12 +39,12 @@ export default function SubmitPage() {
 
   if (submitted) {
     return (
-      <div style={{ fontFamily: "sans-serif", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#f0fdf4" }}>
+      <div style={{ fontFamily: "sans-serif", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#fff7ed" }}>
         <div style={{ textAlign: "center", padding: "40px 24px" }}>
           <div style={{ fontSize: "48px", marginBottom: "16px" }}>✅</div>
-          <h2 style={{ fontSize: "22px", fontWeight: "bold", color: "#15803d", marginBottom: "8px" }}>投稿が完了しました</h2>
+          <h2 style={{ fontSize: "22px", fontWeight: "bold", color: "#ea580c", marginBottom: "8px" }}>投稿が完了しました</h2>
           <p style={{ color: "#6b7280", marginBottom: "24px" }}>イベント情報を受け付けました。</p>
-          <a href="/" style={{ color: "#16a34a", textDecoration: "underline", fontSize: "14px" }}>トップページに戻る</a>
+          <a href="/" style={{ color: "#F97316", textDecoration: "underline", fontSize: "14px" }}>トップページに戻る</a>
         </div>
       </div>
     );
@@ -81,11 +81,11 @@ export default function SubmitPage() {
   return (
     <div style={{ fontFamily: "sans-serif", background: "#fff", minHeight: "100vh" }}>
       <header style={{ borderBottom: "1px solid #e5e7eb", padding: "16px 24px" }}>
-        <a href="/" style={{ fontSize: "18px", fontWeight: "bold", color: "#16a34a", textDecoration: "none" }}>← ドコデル DOKODERU</a>
+        <a href="/" style={{ fontSize: "18px", fontWeight: "bold", color: "#F97316", textDecoration: "none" }}>← ドコデル DOKODERU</a>
       </header>
 
       <main style={{ maxWidth: "560px", margin: "0 auto", padding: "32px 16px" }}>
-        <h1 style={{ fontSize: "22px", fontWeight: "bold", color: "#15803d", marginBottom: "8px" }}>イベントを投稿する</h1>
+        <h1 style={{ fontSize: "22px", fontWeight: "bold", color: "#ea580c", marginBottom: "8px" }}>イベントを投稿する</h1>
         <p style={{ color: "#6b7280", fontSize: "14px", marginBottom: "28px" }}>出店募集イベントの情報を登録できます。</p>
 
         {error && (
@@ -138,7 +138,7 @@ export default function SubmitPage() {
           <button
             type="submit"
             disabled={loading}
-            style={{ width: "100%", padding: "12px", background: loading ? "#86efac" : "#16a34a", color: "#fff", border: "none", borderRadius: "6px", fontSize: "16px", fontWeight: "bold", cursor: loading ? "not-allowed" : "pointer", marginTop: "8px" }}
+            style={{ width: "100%", padding: "12px", background: loading ? "#fed7aa" : "#F97316", color: "#fff", border: "none", borderRadius: "6px", fontSize: "16px", fontWeight: "bold", cursor: loading ? "not-allowed" : "pointer", marginTop: "8px" }}
           >
             {loading ? "送信中..." : "投稿する"}
           </button>

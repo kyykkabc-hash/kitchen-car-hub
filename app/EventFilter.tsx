@@ -66,9 +66,9 @@ export default function EventFilter() {
               fontWeight: "bold",
               fontSize: "14px",
               cursor: "pointer",
-              border: "2px solid #16a34a",
-              background: selected === null ? "#16a34a" : "#fff",
-              color: selected === null ? "#fff" : "#16a34a",
+              border: "2px solid #F97316",
+              background: selected === null ? "#F97316" : "#fff",
+              color: selected === null ? "#fff" : "#F97316",
             }}
           >
             すべて
@@ -83,9 +83,9 @@ export default function EventFilter() {
                 fontWeight: "bold",
                 fontSize: "14px",
                 cursor: "pointer",
-                border: "2px solid #16a34a",
-                background: selected === p ? "#16a34a" : "#fff",
-                color: selected === p ? "#fff" : "#16a34a",
+                border: "2px solid #F97316",
+                background: selected === p ? "#F97316" : "#fff",
+                color: selected === p ? "#fff" : "#F97316",
               }}
             >
               {p}
@@ -127,14 +127,14 @@ export default function EventFilter() {
                 <a
                   href={e.applyUrl}
                   target="_blank"
-                  style={{ background: "#16a34a", color: "#fff", padding: "10px 24px", borderRadius: "6px", textDecoration: "none", fontWeight: "bold" }}
+                  style={{ background: "#F97316", color: "#fff", padding: "10px 24px", borderRadius: "6px", textDecoration: "none", fontWeight: "bold" }}
                 >
                   応募する
                 </a>
                 <a
                   href={e.siteUrl}
                   target="_blank"
-                  style={{ border: "1px solid #16a34a", color: "#16a34a", padding: "10px 24px", borderRadius: "6px", textDecoration: "none" }}
+                  style={{ border: "1px solid #F97316", color: "#F97316", padding: "10px 24px", borderRadius: "6px", textDecoration: "none" }}
                 >
                   公式サイト
                 </a>

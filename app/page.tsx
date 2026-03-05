@@ -8,18 +8,18 @@ export default function Home() {
         <Image src="/logo.png" alt="ドコデル DOKODERU" height={50} width={200} style={{ height: "50px", width: "auto" }} />
         <a
           href="/submit"
-          style={{ background: "#16a34a", color: "#fff", border: "none", borderRadius: "6px", padding: "8px 20px", cursor: "pointer", textDecoration: "none", fontSize: "14px", fontWeight: "bold" }}
+          style={{ background: "#F97316", color: "#fff", border: "none", borderRadius: "6px", padding: "8px 20px", cursor: "pointer", textDecoration: "none", fontSize: "14px", fontWeight: "bold" }}
         >
           イベントを投稿する
         </a>
       </header>
 
-      <section style={{ background: "#f0fdf4", padding: "48px 24px", textAlign: "center" }}>
-        <h1 style={{ fontSize: "28px", fontWeight: "bold", color: "#15803d", marginBottom: "12px" }}>自分にぴったりの出店場所を探しましょう</h1>
+      <section style={{ background: "#fff7ed", padding: "48px 24px", textAlign: "center" }}>
+        <h1 style={{ fontSize: "28px", fontWeight: "bold", color: "#ea580c", marginBottom: "12px" }}>自分にぴったりの出店場所を探しましょう</h1>
         <p style={{ color: "#6b7280", marginBottom: "24px" }}>マルシェ・イベントの出店募集情報をリアルタイムで集約</p>
         <a
           href="/submit"
-          style={{ background: "#16a34a", color: "#fff", padding: "14px 32px", borderRadius: "8px", textDecoration: "none", fontWeight: "bold", fontSize: "16px" }}
+          style={{ background: "#F97316", color: "#fff", padding: "14px 32px", borderRadius: "8px", textDecoration: "none", fontWeight: "bold", fontSize: "16px" }}
         >
           イベントを投稿する
         </a>
