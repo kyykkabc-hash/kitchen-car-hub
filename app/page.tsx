@@ -1,10 +1,11 @@
+import Image from "next/image";
 import EventFilter from "./EventFilter";
 
 export default function Home() {
   return (
     <div style={{ fontFamily: "sans-serif", background: "#fff", minHeight: "100vh" }}>
       <header style={{ borderBottom: "1px solid #e5e7eb", padding: "16px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ fontSize: "22px", fontWeight: "bold", color: "#16a34a" }}>ドコデル DOKODERU</div>
+        <Image src="/logo.png" alt="ドコデル DOKODERU" height={50} width={200} style={{ height: "50px", width: "auto" }} />
         <a
           href="https://lin.ee/WEu1V4o"
           target="_blank"
