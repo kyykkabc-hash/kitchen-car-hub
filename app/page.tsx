@@ -7,11 +7,10 @@ export default function Home() {
       <header style={{ borderBottom: "1px solid #e5e7eb", padding: "16px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Image src="/logo.png" alt="ドコデル DOKODERU" height={50} width={200} style={{ height: "50px", width: "auto" }} />
         <a
-          href="https://lin.ee/WEu1V4o"
-          target="_blank"
-          style={{ background: "#06C755", color: "#fff", border: "none", borderRadius: "6px", padding: "8px 20px", cursor: "pointer", textDecoration: "none", fontSize: "14px", fontWeight: "bold" }}
+          href="/submit"
+          style={{ background: "#16a34a", color: "#fff", border: "none", borderRadius: "6px", padding: "8px 20px", cursor: "pointer", textDecoration: "none", fontSize: "14px", fontWeight: "bold" }}
         >
-          📲 LINE登録
+          イベントを投稿する
         </a>
       </header>
 
@@ -19,11 +18,10 @@ export default function Home() {
         <h1 style={{ fontSize: "28px", fontWeight: "bold", color: "#15803d", marginBottom: "12px" }}>自分にぴったりの出店場所を探しましょう</h1>
         <p style={{ color: "#6b7280", marginBottom: "24px" }}>マルシェ・イベントの出店募集情報をリアルタイムで集約</p>
         <a
-          href="https://lin.ee/WEu1V4o"
-          target="_blank"
-          style={{ background: "#06C755", color: "#fff", padding: "14px 32px", borderRadius: "8px", textDecoration: "none", fontWeight: "bold", fontSize: "16px" }}
+          href="/submit"
+          style={{ background: "#16a34a", color: "#fff", padding: "14px 32px", borderRadius: "8px", textDecoration: "none", fontWeight: "bold", fontSize: "16px" }}
         >
-          📲 LINEで新着情報を受け取る
+          イベントを投稿する
         </a>
       </section>
 
