@@ -2,6 +2,19 @@
 
 import { useState } from "react";
 
+const REGIONS = [
+  { name: "北海道", prefs: ["北海道"] },
+  { name: "東北", prefs: ["青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県"] },
+  { name: "関東", prefs: ["東京都", "神奈川県", "埼玉県", "千葉県", "茨城県", "栃木県", "群馬県", "山梨県"] },
+  { name: "北信越", prefs: ["新潟県", "富山県", "石川県", "福井県", "長野県"] },
+  { name: "東海", prefs: ["愛知県", "静岡県", "三重県", "岐阜県"] },
+  { name: "関西", prefs: ["大阪府", "兵庫県", "京都府", "滋賀県", "奈良県", "和歌山県"] },
+  { name: "中国", prefs: ["鳥取県", "島根県", "岡山県", "広島県", "山口県"] },
+  { name: "四国", prefs: ["徳島県", "香川県", "愛媛県", "高知県"] },
+  { name: "九州", prefs: ["福岡県", "佐賀県", "長崎県", "熊本県", "大分県", "宮崎県", "鹿児島県"] },
+  { name: "沖縄", prefs: ["沖縄県"] },
+];
+
 const EVENTS = [
   {
     pref: "埼玉県",
@@ -45,59 +58,154 @@ const EVENTS = [
   },
 ];
 
-const PREFS = ["東京都", "神奈川県", "埼玉県", "千葉県", "群馬県", "栃木県", "山梨県"];
-
 export default function EventFilter() {
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selectedPrefs, setSelectedPrefs] = useState<string[]>([]);
+  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
 
-  const filtered = selected ? EVENTS.filter((e) => e.pref === selected) : EVENTS;
+  const handleRegionClick = (region: typeof REGIONS[0]) => {
+    if (selectedRegion === region.name) {
+      // 同じ地方を再クリックで解除
+      setSelectedRegion(null);
+      setSelectedPrefs([]);
+    } else {
+      // 地方ブロック選択 → 都道府県選択はリセット
+      setSelectedRegion(region.name);
+      setSelectedPrefs([]);
+    }
+  };
+
+  const handlePrefClick = (pref: string) => {
+    // 都道府県クリック → 地方ブロック選択を解除して都道府県のみで絞り込み
+    setSelectedRegion(null);
+    setSelectedPrefs((prev) =>
+      prev.includes(pref) ? prev.filter((p) => p !== pref) : [...prev, pref]
+    );
+  };
+
+  const handleReset = () => {
+    setSelectedRegion(null);
+    setSelectedPrefs([]);
+  };
+
+  const activePrefs = selectedRegion
+    ? (REGIONS.find((r) => r.name === selectedRegion)?.prefs ?? [])
+    : selectedPrefs;
+
+  const filtered = activePrefs.length === 0
+    ? EVENTS
+    : EVENTS.filter((e) => activePrefs.includes(e.pref));
+
+  const selectionLabel = selectedRegion
+    ? `${selectedRegion}（地方全体）`
+    : selectedPrefs.length > 0
+    ? selectedPrefs.join("・")
+    : null;
 
   return (
     <>
-      {/* エリアフィルターボタン */}
-      <section style={{ padding: "32px 24px", maxWidth: "800px", margin: "0 auto" }}>
+      {/* エリア絞り込み */}
+      <section style={{ padding: "32px 24px", maxWidth: "860px", margin: "0 auto" }}>
         <h2 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "16px" }}>エリアから探す</h2>
-        <div style={{ background: "#f9fafb", borderRadius: "8px", padding: "20px", display: "flex", gap: "10px", flexWrap: "wrap" }}>
-          <button
-            onClick={() => setSelected(null)}
-            style={{
-              padding: "8px 18px",
-              borderRadius: "20px",
-              fontWeight: "bold",
-              fontSize: "14px",
-              cursor: "pointer",
-              border: "2px solid #F97316",
-              background: selected === null ? "#F97316" : "#fff",
-              color: selected === null ? "#fff" : "#F97316",
-            }}
-          >
-            すべて
-          </button>
-          {PREFS.map((p) => (
+
+        {/* 選択中バナー */}
+        {selectionLabel ? (
+          <div style={{
+            display: "flex", alignItems: "center", justifyContent: "space-between",
+            background: "#fff7ed", border: "1px solid #F97316", borderRadius: "8px",
+            padding: "10px 16px", marginBottom: "12px",
+          }}>
+            <span style={{ fontSize: "14px", color: "#ea580c", fontWeight: "bold" }}>
+              選択中：{selectionLabel}
+            </span>
             <button
-              key={p}
-              onClick={() => setSelected(p)}
+              onClick={handleReset}
               style={{
-                padding: "8px 18px",
-                borderRadius: "20px",
-                fontWeight: "bold",
-                fontSize: "14px",
-                cursor: "pointer",
-                border: "2px solid #F97316",
-                background: selected === p ? "#F97316" : "#fff",
-                color: selected === p ? "#fff" : "#F97316",
+                padding: "4px 14px", background: "#F97316", color: "#fff",
+                border: "none", borderRadius: "6px", fontSize: "13px",
+                fontWeight: "bold", cursor: "pointer",
               }}
             >
-              {p}
+              リセット
             </button>
-          ))}
+          </div>
+        ) : (
+          <div style={{ marginBottom: "12px", fontSize: "13px", color: "#9ca3af" }}>
+            地方ブロックまたは都道府県を選んでください
+          </div>
+        )}
+
+        {/* フィルターパネル */}
+        <div style={{ border: "1px solid #fed7aa", borderRadius: "12px", padding: "16px 20px", background: "#fff7ed" }}>
+          {REGIONS.map((region) => {
+            const regionActive = selectedRegion === region.name;
+            return (
+              <div
+                key={region.name}
+                style={{ display: "flex", alignItems: "flex-start", gap: "10px", marginBottom: "12px", flexWrap: "wrap" }}
+              >
+                {/* 地方ブロックボタン */}
+                <button
+                  onClick={() => handleRegionClick(region)}
+                  style={{
+                    flexShrink: 0,
+                    minWidth: "72px",
+                    padding: "6px 14px",
+                    borderRadius: "8px",
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                    cursor: "pointer",
+                    border: "none",
+                    background: regionActive ? "#c2410c" : "#F97316",
+                    color: "#fff",
+                    boxShadow: regionActive ? "0 2px 8px rgba(249,115,22,0.5)" : "none",
+                    transform: regionActive ? "scale(1.05)" : "scale(1)",
+                    transition: "all 0.15s",
+                  }}
+                >
+                  {region.name}
+                </button>
+
+                {/* 都道府県ボタン */}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", flex: 1 }}>
+                  {region.prefs.map((pref) => {
+                    const prefActive = !selectedRegion && selectedPrefs.includes(pref);
+                    return (
+                      <button
+                        key={pref}
+                        onClick={() => handlePrefClick(pref)}
+                        style={{
+                          padding: prefActive ? "5px 14px" : "4px 12px",
+                          borderRadius: "20px",
+                          fontSize: "13px",
+                          cursor: "pointer",
+                          border: "1.5px solid #F97316",
+                          background: prefActive ? "#F97316" : "#fff",
+                          color: prefActive ? "#fff" : "#ea580c",
+                          fontWeight: prefActive ? "bold" : "normal",
+                          boxShadow: prefActive ? "0 2px 6px rgba(249,115,22,0.4)" : "none",
+                          transform: prefActive ? "scale(1.07)" : "scale(1)",
+                          transition: "all 0.15s",
+                        }}
+                      >
+                        {pref}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
       {/* イベント一覧 */}
-      <section style={{ padding: "0 24px 48px", maxWidth: "800px", margin: "0 auto" }}>
+      <section style={{ padding: "0 24px 48px", maxWidth: "860px", margin: "0 auto" }}>
         <h2 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "16px" }}>
-          {selected ? `${selected}の出店募集` : "新着の出店募集"}
+          {selectedRegion
+            ? `${selectedRegion}の出店募集`
+            : selectedPrefs.length > 0
+            ? `${selectedPrefs.join("・")}の出店募集`
+            : "新着の出店募集"}
           <span style={{ fontSize: "14px", fontWeight: "normal", color: "#6b7280", marginLeft: "8px" }}>
             {filtered.length}件
           </span>
