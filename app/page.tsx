@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "sans-serif", background: "#fff", minHeight: "100vh" }}>
       <header style={{ borderBottom: "1px solid #e5e7eb", padding: "16px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Image src="/logo.png" alt="ドコデル DOKODERU" height={50} width={200} style={{ height: "50px", width: "auto" }} />
+        <Image src="/logo.png" alt="ドコデル DOKODERU" height={90} width={360} style={{ height: "90px", width: "auto" }} />
         <a
           href="/submit"
           style={{ background: "#F97316", color: "#fff", border: "none", borderRadius: "6px", padding: "8px 20px", cursor: "pointer", textDecoration: "none", fontSize: "14px", fontWeight: "bold" }}
