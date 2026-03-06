@@ -15,7 +15,19 @@ const REGIONS = [
   { name: "沖縄", prefs: ["沖縄県"] },
 ];
 
-const EVENTS = [
+type VendorType = "kitchen_car" | "tent" | "both";
+
+const EVENTS: {
+  pref: string;
+  title: string;
+  location: string;
+  dates: string;
+  detail: string;
+  deadline: string;
+  applyUrl: string;
+  siteUrl: string;
+  vendor_type: VendorType;
+}[] = [
   {
     pref: "埼玉県",
     title: "埼玉県農林公園フリーマーケット",
@@ -25,6 +37,7 @@ const EVENTS = [
     deadline: "⏰ 募集締切：当日受付",
     applyUrl: "https://fleamarket.or.jp/form/email.html",
     siteUrl: "https://fleamarket.or.jp/nourin.html",
+    vendor_type: "both",
   },
   {
     pref: "東京都",
@@ -35,6 +48,7 @@ const EVENTS = [
     deadline: "⏰ キャンセル待ち受付中（4月5日まで）",
     applyUrl: "https://tokyo.handmade-marche.jp/entry/",
     siteUrl: "https://tokyo.handmade-marche.jp/",
+    vendor_type: "tent",
   },
   {
     pref: "東京都",
@@ -45,6 +59,7 @@ const EVENTS = [
     deadline: "⏰ 随時受付中（フォームから問い合わせ）",
     applyUrl: "https://toyosu-jyogai-marche.com/vender.html",
     siteUrl: "https://toyosu-jyogai-marche.com/",
+    vendor_type: "both",
   },
   {
     pref: "東京都",
@@ -55,8 +70,28 @@ const EVENTS = [
     deadline: "⏰ 毎月2か月先分を一斉募集（2〜3週間で締切）",
     applyUrl: "https://marche.nougyou.tv/entry/",
     siteUrl: "https://marche.nougyou.tv/",
+    vendor_type: "kitchen_car",
   },
 ];
+
+function VendorIcons({ type }: { type: VendorType }) {
+  return (
+    <div style={{ display: "flex", gap: "6px", alignItems: "center", marginBottom: "10px" }}>
+      {(type === "kitchen_car" || type === "both") && (
+        <span style={{ display: "flex", alignItems: "center", gap: "4px", background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: "20px", padding: "3px 10px", fontSize: "12px", color: "#ea580c", fontWeight: "bold" }}>
+          <img src="/icons/kitchen-car.svg" alt="キッチンカー" width={20} height={20} />
+          キッチンカー
+        </span>
+      )}
+      {(type === "tent" || type === "both") && (
+        <span style={{ display: "flex", alignItems: "center", gap: "4px", background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: "20px", padding: "3px 10px", fontSize: "12px", color: "#ea580c", fontWeight: "bold" }}>
+          <img src="/icons/tent.svg" alt="テント出店" width={20} height={20} />
+          テント出店
+        </span>
+      )}
+    </div>
+  );
+}
 
 export default function EventFilter() {
   const [selectedPrefs, setSelectedPrefs] = useState<string[]>([]);
@@ -64,22 +99,23 @@ export default function EventFilter() {
 
   const handleRegionClick = (region: typeof REGIONS[0]) => {
     if (selectedRegion === region.name) {
-      // 同じ地方を再クリックで解除
       setSelectedRegion(null);
       setSelectedPrefs([]);
     } else {
-      // 地方ブロック選択 → 都道府県選択はリセット
       setSelectedRegion(region.name);
       setSelectedPrefs([]);
     }
   };
 
   const handlePrefClick = (pref: string) => {
-    // 都道府県クリック → 地方ブロック選択を解除して都道府県のみで絞り込み
-    setSelectedRegion(null);
-    setSelectedPrefs((prev) =>
-      prev.includes(pref) ? prev.filter((p) => p !== pref) : [...prev, pref]
-    );
+    if (selectedRegion !== null) {
+      setSelectedRegion(null);
+      setSelectedPrefs([pref]);
+    } else {
+      setSelectedPrefs((prev) =>
+        prev.includes(pref) ? prev.filter((p) => p !== pref) : [...prev, pref]
+      );
+    }
   };
 
   const handleReset = () => {
@@ -91,9 +127,10 @@ export default function EventFilter() {
     ? (REGIONS.find((r) => r.name === selectedRegion)?.prefs ?? [])
     : selectedPrefs;
 
-  const filtered = activePrefs.length === 0
-    ? EVENTS
-    : EVENTS.filter((e) => activePrefs.includes(e.pref));
+  const filtered =
+    activePrefs.length === 0
+      ? EVENTS
+      : EVENTS.filter((e) => activePrefs.includes(e.pref));
 
   const selectionLabel = selectedRegion
     ? `${selectedRegion}（地方全体）`
@@ -107,7 +144,6 @@ export default function EventFilter() {
       <section style={{ padding: "32px 24px", maxWidth: "860px", margin: "0 auto" }}>
         <h2 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "16px" }}>エリアから探す</h2>
 
-        {/* 選択中バナー */}
         {selectionLabel ? (
           <div style={{
             display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -119,11 +155,7 @@ export default function EventFilter() {
             </span>
             <button
               onClick={handleReset}
-              style={{
-                padding: "4px 14px", background: "#F97316", color: "#fff",
-                border: "none", borderRadius: "6px", fontSize: "13px",
-                fontWeight: "bold", cursor: "pointer",
-              }}
+              style={{ padding: "4px 14px", background: "#F97316", color: "#fff", border: "none", borderRadius: "6px", fontSize: "13px", fontWeight: "bold", cursor: "pointer" }}
             >
               リセット
             </button>
@@ -134,29 +166,17 @@ export default function EventFilter() {
           </div>
         )}
 
-        {/* フィルターパネル */}
         <div style={{ border: "1px solid #fed7aa", borderRadius: "12px", padding: "16px 20px", background: "#fff7ed" }}>
           {REGIONS.map((region) => {
             const regionActive = selectedRegion === region.name;
             return (
-              <div
-                key={region.name}
-                style={{ display: "flex", alignItems: "flex-start", gap: "10px", marginBottom: "12px", flexWrap: "wrap" }}
-              >
-                {/* 地方ブロックボタン */}
+              <div key={region.name} style={{ display: "flex", alignItems: "flex-start", gap: "10px", marginBottom: "12px", flexWrap: "wrap" }}>
                 <button
                   onClick={() => handleRegionClick(region)}
                   style={{
-                    flexShrink: 0,
-                    minWidth: "72px",
-                    padding: "6px 14px",
-                    borderRadius: "8px",
-                    fontWeight: "bold",
-                    fontSize: "14px",
-                    cursor: "pointer",
-                    border: "none",
-                    background: regionActive ? "#c2410c" : "#F97316",
-                    color: "#fff",
+                    flexShrink: 0, minWidth: "72px", padding: "6px 14px", borderRadius: "8px",
+                    fontWeight: "bold", fontSize: "14px", cursor: "pointer", border: "none",
+                    background: regionActive ? "#c2410c" : "#F97316", color: "#fff",
                     boxShadow: regionActive ? "0 2px 8px rgba(249,115,22,0.5)" : "none",
                     transform: regionActive ? "scale(1.05)" : "scale(1)",
                     transition: "all 0.15s",
@@ -164,8 +184,6 @@ export default function EventFilter() {
                 >
                   {region.name}
                 </button>
-
-                {/* 都道府県ボタン */}
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", flex: 1 }}>
                   {region.prefs.map((pref) => {
                     const prefActive = !selectedRegion && selectedPrefs.includes(pref);
@@ -174,11 +192,8 @@ export default function EventFilter() {
                         key={pref}
                         onClick={() => handlePrefClick(pref)}
                         style={{
-                          padding: prefActive ? "5px 14px" : "4px 12px",
-                          borderRadius: "20px",
-                          fontSize: "13px",
-                          cursor: "pointer",
-                          border: "1.5px solid #F97316",
+                          padding: prefActive ? "5px 14px" : "4px 12px", borderRadius: "20px",
+                          fontSize: "13px", cursor: "pointer", border: "1.5px solid #F97316",
                           background: prefActive ? "#F97316" : "#fff",
                           color: prefActive ? "#fff" : "#ea580c",
                           fontWeight: prefActive ? "bold" : "normal",
@@ -219,31 +234,19 @@ export default function EventFilter() {
           filtered.map((e, i) => (
             <div
               key={i}
-              style={{
-                border: "1px solid #e5e7eb",
-                borderRadius: "12px",
-                padding: "20px",
-                marginTop: i === 0 ? 0 : "16px",
-              }}
+              style={{ border: "1px solid #e5e7eb", borderRadius: "12px", padding: "20px", marginTop: i === 0 ? 0 : "16px" }}
             >
+              <VendorIcons type={e.vendor_type} />
               <h3 style={{ fontSize: "18px", fontWeight: "bold" }}>{e.title}</h3>
               <p style={{ color: "#6b7280", fontSize: "14px" }}>{e.location}</p>
               <p style={{ marginTop: "8px" }}>{e.dates}</p>
               <p>{e.detail}</p>
               <p style={{ color: "#dc2626", fontWeight: "bold" }}>{e.deadline}</p>
               <div style={{ marginTop: "16px", display: "flex", gap: "12px", flexWrap: "wrap" }}>
-                <a
-                  href={e.applyUrl}
-                  target="_blank"
-                  style={{ background: "#F97316", color: "#fff", padding: "10px 24px", borderRadius: "6px", textDecoration: "none", fontWeight: "bold" }}
-                >
+                <a href={e.applyUrl} target="_blank" style={{ background: "#F97316", color: "#fff", padding: "10px 24px", borderRadius: "6px", textDecoration: "none", fontWeight: "bold" }}>
                   応募する
                 </a>
-                <a
-                  href={e.siteUrl}
-                  target="_blank"
-                  style={{ border: "1px solid #F97316", color: "#F97316", padding: "10px 24px", borderRadius: "6px", textDecoration: "none" }}
-                >
+                <a href={e.siteUrl} target="_blank" style={{ border: "1px solid #F97316", color: "#F97316", padding: "10px 24px", borderRadius: "6px", textDecoration: "none" }}>
                   公式サイト
                 </a>
               </div>
