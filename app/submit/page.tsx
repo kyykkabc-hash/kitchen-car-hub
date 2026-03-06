@@ -10,8 +10,8 @@ export default function SubmitPage() {
     event_date: "",
     location_name: "",
     prefecture: "",
-    organizer_name: "",
-    contact_url: "",
+    event_url: "",
+    application_url: "",
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -126,13 +126,13 @@ export default function SubmitPage() {
           </label>
 
           <label style={labelStyle}>
-            主催者名 <span style={{ color: "#ef4444" }}>*</span>
-            <input name="organizer_name" value={form.organizer_name} onChange={handleChange} required placeholder="例：株式会社〇〇 / 〇〇実行委員会" style={inputStyle} />
+            イベント概要URL
+            <input name="event_url" value={form.event_url} onChange={handleChange} type="url" placeholder="例：https://example.com/event" style={inputStyle} />
           </label>
 
           <label style={labelStyle}>
-            問い合わせURL
-            <input name="contact_url" value={form.contact_url} onChange={handleChange} type="url" placeholder="https://..." style={inputStyle} />
+            出展募集応募フォームURL
+            <input name="application_url" value={form.application_url} onChange={handleChange} type="url" placeholder="例：https://example.com/apply" style={inputStyle} />
           </label>
 
           <button
