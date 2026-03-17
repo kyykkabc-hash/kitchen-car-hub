@@ -15,7 +15,8 @@
       "Bash(cd /c/Users/kyykk/kitchen-car-hub && pkill -f \"next dev\" 2>/dev/null; rm -rf .next && npm run dev)",
       "Bash(cd /c/Users/kyykk/kitchen-car-hub && rm -rf .next && npm run dev)",
       "Bash(cd /c/Users/kyykk/kitchen-car-hub && npx tsc --noEmit 2>&1 | head -50)",
-      "Bash(cd /c/Users/kyykk/kitchen-car-hub && curl -s http://localhost:3003 2>&1 | head -5)"
+      "Bash(cd /c/Users/kyykk/kitchen-car-hub && curl -s http://localhost:3003 2>&1 | head -5)",
+      "Bash(ls /c/Users/kyykk/kitchen-car-hub/*.js /c/Users/kyykk/kitchen-car-hub/*.ts /c/Users/kyykk/kitchen-car-hub/*.mjs 2>/dev/null)"
     ]
   }
 }
