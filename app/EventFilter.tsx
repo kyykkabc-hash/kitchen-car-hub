@@ -225,7 +225,7 @@ export default function EventFilter() {
         {/* 都道府県グリッド */}
         {regionPrefs.length > 0 && (
           <div style={{ padding: "12px 16px", background: "#fff7ed", borderTop: "1px solid #fed7aa", borderBottom: "1px solid #fed7aa" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
               {regionPrefs.map((pref) => {
                 // selectedPrefectures が空 → 地方全体選択中 → 全ボタンオレンジ
                 const active = selectedPrefectures.length === 0 || selectedPrefectures.includes(pref);
@@ -234,13 +234,14 @@ export default function EventFilter() {
                     key={pref}
                     onClick={() => handlePrefClick(pref)}
                     style={{
-                      height: "44px",
-                      borderRadius: "8px",
-                      border: active ? "none" : "1.5px solid #F97316",
-                      background: active ? "#F97316" : "#fff",
-                      color: active ? "#fff" : "#ea580c",
+                      padding: "4px 10px",
+                      fontSize: "0.78rem",
+                      borderRadius: "6px",
+                      border: active ? "1px solid #f97316" : "1px solid #fdba74",
+                      backgroundColor: active ? "#f97316" : "#fff7ed",
+                      color: active ? "white" : "#ea580c",
                       fontWeight: active ? "bold" : "normal",
-                      fontSize: "13px",
+                      whiteSpace: "nowrap",
                       cursor: "pointer",
                     }}
                   >
