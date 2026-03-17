@@ -14,15 +14,18 @@ export default function Home() {
         </a>
       </header>
 
-      <section style={{ background: "#fff7ed", padding: "48px 24px", textAlign: "center" }}>
-        <h1 style={{ fontSize: "28px", fontWeight: "bold", color: "#ea580c", marginBottom: "12px" }}>自分にぴったりの出店場所を探しましょう</h1>
-        <p style={{ color: "#6b7280", marginBottom: "24px" }}>マルシェ・イベントの出店募集情報をリアルタイムで集約</p>
-        <a
-          href="/submit"
-          style={{ background: "#F97316", color: "#fff", padding: "14px 32px", borderRadius: "8px", textDecoration: "none", fontWeight: "bold", fontSize: "16px" }}
-        >
-          イベントを投稿する
-        </a>
+      <section style={{ position: "relative", width: "100%", minHeight: "400px", backgroundImage: "url('/marche-hero.jpg.jpeg')", backgroundSize: "cover", backgroundPosition: "center" }}>
+        <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.05)" }} />
+        <div style={{ position: "relative", zIndex: 1, height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "24px" }}>
+          <h1 style={{ fontSize: "clamp(20px, 4vw, 32px)", fontWeight: "bold", color: "#fff", marginBottom: "12px", textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}>自分にぴったりの出店場所を探しましょう</h1>
+          <p style={{ color: "#ffffff", marginBottom: "28px", fontSize: "clamp(13px, 2vw, 16px)", textShadow: "0 1px 6px rgba(0,0,0,0.9)", fontWeight: "bold" }}>マルシェ・イベントの出店募集情報をリアルタイムで集約</p>
+          <a
+            href="/submit"
+            style={{ background: "#F97316", color: "#fff", padding: "14px 32px", borderRadius: "8px", textDecoration: "none", fontWeight: "bold", fontSize: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.3)" }}
+          >
+            イベントを投稿する
+          </a>
+        </div>
       </section>
 
       <EventFilter />

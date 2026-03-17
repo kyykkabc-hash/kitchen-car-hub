@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:tokyo.handmade-marche.jp)",
+      "WebFetch(domain:toyosu-jyogai-marche.com)",
+      "WebFetch(domain:marche.nougyou.tv)",
+      "Bash(npm run:*)",
+      "Bash(rm:*)",
+      "Bash(npm install:*)",
+      "WebFetch(domain:kirara-marche.info)",
+      "WebFetch(domain:tano-kura.net)",
+      "WebFetch(domain:wakamaru.hp.peraichi.com)",
+      "Bash(node:*)"
+    ]
+  }
+}
