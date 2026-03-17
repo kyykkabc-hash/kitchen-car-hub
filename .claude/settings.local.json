@@ -11,7 +11,8 @@
       "WebFetch(domain:kirara-marche.info)",
       "WebFetch(domain:tano-kura.net)",
       "WebFetch(domain:wakamaru.hp.peraichi.com)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(cd /c/Users/kyykk/kitchen-car-hub && pkill -f \"next dev\" 2>/dev/null; rm -rf .next && npm run dev)"
     ]
   }
 }
