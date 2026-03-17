@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "../../lib/supabase";
 
 const CONTACT_TYPES = [
   "出店募集情報について",
@@ -32,7 +31,7 @@ export default function ContactPage() {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    contact_type: CONTACT_TYPES[0],
+    category: CONTACT_TYPES[0],
     message: "",
   });
   const [loading, setLoading] = useState(false);
@@ -48,12 +47,16 @@ export default function ContactPage() {
     setLoading(true);
     setError("");
 
-    const { error } = await supabase.from("contacts").insert([form]);
-
-    if (error) {
-      setError("送信に失敗しました。しばらくしてから再度お試しください。");
-    } else {
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error('送信失敗');
       setSubmitted(true);
+    } catch {
+      setError("送信に失敗しました。しばらくしてから再度お試しください。");
     }
     setLoading(false);
   };
@@ -116,8 +119,8 @@ export default function ContactPage() {
             <label style={labelStyle}>
               お問い合わせ種別
               <select
-                name="contact_type"
-                value={form.contact_type}
+                name="category"
+                value={form.category}
                 onChange={handleChange}
                 style={inputStyle}
               >
