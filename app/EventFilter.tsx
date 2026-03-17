@@ -24,6 +24,7 @@ const EVENTS: {
   dates: string;
   detail: string;
   deadline: string;
+  application_deadline?: string;
   applyUrl: string;
   siteUrl: string;
   vendor_type: VendorType;
@@ -46,6 +47,7 @@ const EVENTS: {
     dates: "📅 4月18日(土)・4月19日(日)　いずれか1日",
     detail: "🕐 10:00〜17:00　💰 1ブース15,800円（税込）",
     deadline: "⏰ キャンセル待ち受付中（4月5日まで）",
+    application_deadline: "2026-04-05",
     applyUrl: "https://tokyo.handmade-marche.jp/entry/",
     siteUrl: "https://tokyo.handmade-marche.jp/",
     vendor_type: "tent",
@@ -68,6 +70,7 @@ const EVENTS: {
     dates: "📅 毎週土曜日　10:00〜14:00",
     detail: "💰 売上歩合制：食品12%・雑貨15%（最低3,000円）",
     deadline: "⏰ 毎月2か月先分を一斉募集（2〜3週間で締切）",
+    application_deadline: "2026-03-20",
     applyUrl: "https://marche.nougyou.tv/entry/",
     siteUrl: "https://marche.nougyou.tv/",
     vendor_type: "kitchen_car",
@@ -93,165 +96,188 @@ function VendorIcons({ type }: { type: VendorType }) {
   );
 }
 
-export default function EventFilter() {
-  const [selectedPrefs, setSelectedPrefs] = useState<string[]>([]);
-  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+function EventCard({ e, urgent = false }: { e: typeof EVENTS[0]; urgent?: boolean }) {
+  return (
+    <div style={{
+      border: urgent ? "2px solid #dc2626" : "1px solid #e5e7eb",
+      borderRadius: "12px",
+      padding: "20px",
+      background: urgent ? "#fff5f5" : "#fff",
+    }}>
+      <VendorIcons type={e.vendor_type} />
+      <h3 style={{ fontSize: "17px", fontWeight: "bold", marginBottom: "4px" }}>{e.title}</h3>
+      <p style={{ color: "#6b7280", fontSize: "13px" }}>{e.location}</p>
+      <p style={{ marginTop: "8px", fontSize: "14px" }}>{e.dates}</p>
+      <p style={{ fontSize: "14px" }}>{e.detail}</p>
+      <p style={{ color: "#dc2626", fontWeight: "bold", fontSize: "14px" }}>{e.deadline}</p>
+      <div style={{ marginTop: "16px", display: "flex", gap: "10px", flexWrap: "wrap" }}>
+        <a href={e.applyUrl} target="_blank" style={{ background: urgent ? "#dc2626" : "#F97316", color: "#fff", padding: "10px 24px", borderRadius: "6px", textDecoration: "none", fontWeight: "bold", fontSize: "14px" }}>
+          応募する
+        </a>
+        <a href={e.siteUrl} target="_blank" style={{ border: `1px solid ${urgent ? "#dc2626" : "#F97316"}`, color: urgent ? "#dc2626" : "#F97316", padding: "10px 24px", borderRadius: "6px", textDecoration: "none", fontSize: "14px" }}>
+          公式サイト
+        </a>
+      </div>
+    </div>
+  );
+}
 
-  const handleRegionClick = (region: typeof REGIONS[0]) => {
-    if (selectedRegion === region.name) {
+export default function EventFilter() {
+  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+  const [selectedPrefectures, setSelectedPrefectures] = useState<string[]>([]);
+
+  const regionPrefs = selectedRegion
+    ? (REGIONS.find((r) => r.name === selectedRegion)?.prefs ?? [])
+    : [];
+
+  // フィルタロジック
+  const filtered = EVENTS.filter((e) => {
+    if (selectedPrefectures.length > 0) return selectedPrefectures.includes(e.pref);
+    if (selectedRegion) return regionPrefs.includes(e.pref);
+    return true;
+  });
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const in7days = new Date(today);
+  in7days.setDate(today.getDate() + 7);
+  const urgentEvents = (selectedRegion || selectedPrefectures.length > 0)
+    ? filtered.filter((e) => {
+        if (!e.application_deadline) return false;
+        const d = new Date(e.application_deadline);
+        return d >= today && d <= in7days;
+      })
+    : [];
+
+  // エリアラベル生成
+  const areaLabel = selectedPrefectures.length > 0
+    ? selectedPrefectures.join("・")
+    : selectedRegion ?? "";
+
+  const handleRegionClick = (regionName: string) => {
+    if (selectedRegion === regionName) {
       setSelectedRegion(null);
-      setSelectedPrefs([]);
+      setSelectedPrefectures([]);
     } else {
-      setSelectedRegion(region.name);
-      setSelectedPrefs([]);
+      setSelectedRegion(regionName);
+      setSelectedPrefectures([]);
     }
   };
 
   const handlePrefClick = (pref: string) => {
-    if (selectedRegion !== null) {
-      setSelectedRegion(null);
-      setSelectedPrefs([pref]);
-    } else {
-      setSelectedPrefs((prev) =>
-        prev.includes(pref) ? prev.filter((p) => p !== pref) : [...prev, pref]
-      );
-    }
+    setSelectedPrefectures((prev) => {
+      const next = prev.includes(pref) ? prev.filter((p) => p !== pref) : [...prev, pref];
+      return next;
+    });
   };
-
-  const handleReset = () => {
-    setSelectedRegion(null);
-    setSelectedPrefs([]);
-  };
-
-  const activePrefs = selectedRegion
-    ? (REGIONS.find((r) => r.name === selectedRegion)?.prefs ?? [])
-    : selectedPrefs;
-
-  const filtered =
-    activePrefs.length === 0
-      ? EVENTS
-      : EVENTS.filter((e) => activePrefs.includes(e.pref));
-
-  const selectionLabel = selectedRegion
-    ? `${selectedRegion}（地方全体）`
-    : selectedPrefs.length > 0
-    ? selectedPrefs.join("・")
-    : null;
 
   return (
     <>
-      {/* エリア絞り込み */}
-      <section style={{ padding: "32px 24px", maxWidth: "860px", margin: "0 auto" }}>
-        <h2 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "16px" }}>エリアから探す</h2>
+      <style>{`
+        .region-scroll::-webkit-scrollbar { display: none; }
+        .region-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
 
-        {selectionLabel ? (
-          <div style={{
-            display: "flex", alignItems: "center", justifyContent: "space-between",
-            background: "#fff7ed", border: "1px solid #F97316", borderRadius: "8px",
-            padding: "10px 16px", marginBottom: "12px",
-          }}>
-            <span style={{ fontSize: "14px", color: "#ea580c", fontWeight: "bold" }}>
-              選択中：{selectionLabel}
-            </span>
+      <section style={{ padding: "28px 0 0", maxWidth: "860px", margin: "0 auto" }}>
+        <h2 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "12px", padding: "0 16px" }}>エリアから探す</h2>
+
+        {/* 選択中サマリー */}
+        {areaLabel ? (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "0 16px 10px", background: "#fff7ed", border: "1px solid #F97316", borderRadius: "8px", padding: "8px 12px" }}>
+            <span style={{ fontSize: "13px", color: "#ea580c", fontWeight: "bold" }}>🔍 {areaLabel}</span>
             <button
-              onClick={handleReset}
-              style={{ padding: "4px 14px", background: "#F97316", color: "#fff", border: "none", borderRadius: "6px", fontSize: "13px", fontWeight: "bold", cursor: "pointer" }}
-            >
-              リセット
-            </button>
+              onClick={() => { setSelectedRegion(null); setSelectedPrefectures([]); }}
+              style={{ background: "none", border: "none", color: "#9ca3af", fontSize: "20px", cursor: "pointer", lineHeight: 1, padding: "0 0 0 8px" }}
+            >×</button>
           </div>
         ) : (
-          <div style={{ marginBottom: "12px", fontSize: "13px", color: "#9ca3af" }}>
-            地方ブロックまたは都道府県を選んでください
-          </div>
+          <p style={{ fontSize: "13px", color: "#9ca3af", margin: "0 16px 10px" }}>地方をタップすると都道府県が表示されます</p>
         )}
 
-        <div style={{ border: "1px solid #fed7aa", borderRadius: "12px", padding: "16px 20px", background: "#fff7ed" }}>
+        {/* 地方タブ（横スクロール） */}
+        <div className="region-scroll" style={{ display: "flex", overflowX: "auto", gap: "8px", padding: "0 16px 12px" }}>
           {REGIONS.map((region) => {
-            const regionActive = selectedRegion === region.name;
+            const isSelected = selectedRegion === region.name;
             return (
-              <div key={region.name} style={{ display: "flex", alignItems: "flex-start", gap: "10px", marginBottom: "12px", flexWrap: "wrap" }}>
-                <button
-                  onClick={() => handleRegionClick(region)}
-                  style={{
-                    flexShrink: 0, minWidth: "72px", padding: "6px 14px", borderRadius: "8px",
-                    fontWeight: "bold", fontSize: "14px", cursor: "pointer", border: "none",
-                    background: regionActive ? "#c2410c" : "#F97316", color: "#fff",
-                    boxShadow: regionActive ? "0 2px 8px rgba(249,115,22,0.5)" : "none",
-                    transform: regionActive ? "scale(1.05)" : "scale(1)",
-                    transition: "all 0.15s",
-                  }}
-                >
-                  {region.name}
-                </button>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", flex: 1 }}>
-                  {region.prefs.map((pref) => {
-                    const prefActive = !selectedRegion && selectedPrefs.includes(pref);
-                    return (
-                      <button
-                        key={pref}
-                        onClick={() => handlePrefClick(pref)}
-                        style={{
-                          padding: prefActive ? "5px 14px" : "4px 12px", borderRadius: "20px",
-                          fontSize: "13px", cursor: "pointer", border: "1.5px solid #F97316",
-                          background: prefActive ? "#F97316" : "#fff",
-                          color: prefActive ? "#fff" : "#ea580c",
-                          fontWeight: prefActive ? "bold" : "normal",
-                          boxShadow: prefActive ? "0 2px 6px rgba(249,115,22,0.4)" : "none",
-                          transform: prefActive ? "scale(1.07)" : "scale(1)",
-                          transition: "all 0.15s",
-                        }}
-                      >
-                        {pref}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+              <button
+                key={region.name}
+                onClick={() => handleRegionClick(region.name)}
+                style={{
+                  flexShrink: 0,
+                  height: "44px",
+                  padding: "0 18px",
+                  borderRadius: "22px",
+                  border: isSelected ? "none" : "1.5px solid #d1d5db",
+                  background: isSelected ? "#F97316" : "#f9fafb",
+                  color: isSelected ? "#fff" : "#374151",
+                  fontWeight: isSelected ? "bold" : "normal",
+                  fontSize: "14px",
+                  cursor: "pointer",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {region.name}
+              </button>
             );
           })}
         </div>
+
+        {/* 都道府県グリッド */}
+        {regionPrefs.length > 0 && (
+          <div style={{ padding: "12px 16px", background: "#fff7ed", borderTop: "1px solid #fed7aa", borderBottom: "1px solid #fed7aa" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
+              {regionPrefs.map((pref) => {
+                // selectedPrefectures が空 → 地方全体選択中 → 全ボタンオレンジ
+                const active = selectedPrefectures.length === 0 || selectedPrefectures.includes(pref);
+                return (
+                  <button
+                    key={pref}
+                    onClick={() => handlePrefClick(pref)}
+                    style={{
+                      height: "44px",
+                      borderRadius: "8px",
+                      border: active ? "none" : "1.5px solid #F97316",
+                      background: active ? "#F97316" : "#fff",
+                      color: active ? "#fff" : "#ea580c",
+                      fontWeight: active ? "bold" : "normal",
+                      fontSize: "13px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {pref}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </section>
 
-      {/* イベント一覧 */}
-      <section style={{ padding: "0 24px 48px", maxWidth: "860px", margin: "0 auto" }}>
-        <h2 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "16px" }}>
-          {selectedRegion
-            ? `${selectedRegion}の出店募集`
-            : selectedPrefs.length > 0
-            ? `${selectedPrefs.join("・")}の出店募集`
-            : "新着の出店募集"}
-          <span style={{ fontSize: "14px", fontWeight: "normal", color: "#6b7280", marginLeft: "8px" }}>
-            {filtered.length}件
-          </span>
-        </h2>
+      {/* 締切間近セクション */}
+      {urgentEvents.length > 0 && (
+        <section style={{ padding: "24px 16px 16px", maxWidth: "860px", margin: "0 auto" }}>
+          <h2 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "12px", color: "#dc2626" }}>
+            締切間近の出店募集{areaLabel ? `（${areaLabel}）` : ""} 🔥
+            <span style={{ fontSize: "13px", fontWeight: "normal", color: "#9ca3af", marginLeft: "8px" }}>{urgentEvents.length}件</span>
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            {urgentEvents.map((e, i) => <EventCard key={i} e={e} urgent />)}
+          </div>
+        </section>
+      )}
 
+      {/* 出店募集一覧 */}
+      <section style={{ padding: "24px 16px 48px", maxWidth: "860px", margin: "0 auto" }}>
+        <h2 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "12px" }}>
+          新着の出店募集{areaLabel ? `（${areaLabel}）` : ""}
+          <span style={{ fontSize: "13px", fontWeight: "normal", color: "#9ca3af", marginLeft: "8px" }}>{filtered.length}件</span>
+        </h2>
         {filtered.length === 0 ? (
-          <p style={{ color: "#6b7280", padding: "32px 0", textAlign: "center" }}>
-            このエリアの募集情報は現在ありません。
-          </p>
+          <p style={{ color: "#6b7280", padding: "32px 0", textAlign: "center" }}>このエリアの募集情報は現在ありません。</p>
         ) : (
-          filtered.map((e, i) => (
-            <div
-              key={i}
-              style={{ border: "1px solid #e5e7eb", borderRadius: "12px", padding: "20px", marginTop: i === 0 ? 0 : "16px" }}
-            >
-              <VendorIcons type={e.vendor_type} />
-              <h3 style={{ fontSize: "18px", fontWeight: "bold" }}>{e.title}</h3>
-              <p style={{ color: "#6b7280", fontSize: "14px" }}>{e.location}</p>
-              <p style={{ marginTop: "8px" }}>{e.dates}</p>
-              <p>{e.detail}</p>
-              <p style={{ color: "#dc2626", fontWeight: "bold" }}>{e.deadline}</p>
-              <div style={{ marginTop: "16px", display: "flex", gap: "12px", flexWrap: "wrap" }}>
-                <a href={e.applyUrl} target="_blank" style={{ background: "#F97316", color: "#fff", padding: "10px 24px", borderRadius: "6px", textDecoration: "none", fontWeight: "bold" }}>
-                  応募する
-                </a>
-                <a href={e.siteUrl} target="_blank" style={{ border: "1px solid #F97316", color: "#F97316", padding: "10px 24px", borderRadius: "6px", textDecoration: "none" }}>
-                  公式サイト
-                </a>
-              </div>
-            </div>
-          ))
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            {filtered.map((e, i) => <EventCard key={i} e={e} />)}
+          </div>
         )}
       </section>
     </>
