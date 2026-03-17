@@ -35,7 +35,7 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https://scdn.line-apps.com https://*.supabase.co",
       "font-src 'self'",
-      "connect-src 'self' https://*.supabase.co https://api.anthropic.com",
+      "connect-src 'self' https://*.supabase.co https://api.anthropic.com https://kitchen-car-hub-nc4j.vercel.app",
       "frame-src 'none'",
     ].join('; ')
   }
