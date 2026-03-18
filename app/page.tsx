@@ -67,8 +67,8 @@ export default async function Home() {
 
       {/* 主催者セクション */}
       <section style={{
-        backgroundColor: '#fff7ed',
-        border: '2px solid #f97316',
+        backgroundColor: '#f0f9ff',
+        border: '2px solid #0ea5e9',
         borderRadius: '12px',
         padding: '24px 16px',
         margin: '32px 16px',
@@ -77,7 +77,7 @@ export default async function Home() {
         <p style={{ fontSize: '0.8rem', color: '#9ca3af', marginBottom: '4px' }}>
           マルシェ・イベントを開催している方へ
         </p>
-        <h2 style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#f97316', marginBottom: '8px' }}>
+        <h2 style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#0ea5e9', marginBottom: '8px' }}>
           主催者の方へ
         </h2>
         <p style={{ fontSize: '0.85rem', color: '#6b7280', marginBottom: '16px' }}>
