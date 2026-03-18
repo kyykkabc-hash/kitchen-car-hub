@@ -20,7 +20,7 @@ export default async function Home() {
         <Image src="/logo.png" alt="ドコデル DOKODERU" height={90} width={360} style={{ height: "90px", width: "auto" }} />
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
           <span style={{ fontSize: "0.65rem", color: "#666", whiteSpace: "nowrap" }}>自分の周りの出店情報がLINEで届く</span>
-          <a href="#">
+          <a href="https://lin.ee/Y4TzTKX" target="_blank" rel="noopener noreferrer">
             <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" style={{ height: "32px", width: "auto" }} />
           </a>
           <a href="/contact" style={{
