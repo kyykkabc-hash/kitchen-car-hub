@@ -98,6 +98,33 @@ export default async function Home() {
         </a>
       </section>
 
+      {/* LINE登録セクション */}
+      <section style={{
+        background: 'linear-gradient(135deg, #06C755 0%, #04a344 100%)',
+        borderRadius: '12px',
+        padding: '24px 16px',
+        margin: '16px 16px',
+        textAlign: 'center',
+        color: 'white'
+      }}>
+        <p style={{ fontSize: '0.75rem', opacity: 0.9, marginBottom: '4px' }}>
+          📍 エリアを登録するだけ
+        </p>
+        <h2 style={{ fontSize: '1.1rem', fontWeight: 'bold', marginBottom: '6px' }}>
+          自分の周りの出店情報がLINEで届く
+        </h2>
+        <p style={{ fontSize: '0.8rem', opacity: 0.85, marginBottom: '16px' }}>
+          新着の出店募集をLINEでお知らせします
+        </p>
+        <a href="https://lin.ee/Y4TzTKX" style={{ display: 'inline-block' }}>
+          <img
+            src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png"
+            alt="友だち追加"
+            style={{ height: '44px', width: 'auto' }}
+          />
+        </a>
+      </section>
+
       {/* お知らせセクション */}
       <section style={{ backgroundColor: "#fdf6ec", padding: "40px 16px", marginTop: "32px" }}>
         <div style={{ textAlign: "center", marginBottom: "24px" }}>
