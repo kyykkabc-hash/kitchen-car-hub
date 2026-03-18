@@ -65,6 +65,39 @@ export default async function Home() {
 
       <EventFilter />
 
+      {/* 主催者セクション */}
+      <section style={{
+        backgroundColor: '#fff7ed',
+        border: '2px solid #f97316',
+        borderRadius: '12px',
+        padding: '24px 16px',
+        margin: '32px 16px',
+        textAlign: 'center'
+      }}>
+        <p style={{ fontSize: '0.8rem', color: '#9ca3af', marginBottom: '4px' }}>
+          マルシェ・イベントを開催している方へ
+        </p>
+        <h2 style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#f97316', marginBottom: '8px' }}>
+          主催者の方へ
+        </h2>
+        <p style={{ fontSize: '0.85rem', color: '#6b7280', marginBottom: '16px' }}>
+          出店募集情報を無料で掲載できます。<br />
+          多くの出店者にリーチしましょう。
+        </p>
+        <a href="/submit" style={{
+          backgroundColor: '#f97316',
+          color: 'white',
+          padding: '10px 24px',
+          borderRadius: '9999px',
+          fontWeight: 'bold',
+          fontSize: '0.9rem',
+          textDecoration: 'none',
+          display: 'inline-block'
+        }}>
+          イベントを掲載する →
+        </a>
+      </section>
+
       {/* お知らせセクション */}
       <section style={{ backgroundColor: "#fdf6ec", padding: "40px 16px", marginTop: "32px" }}>
         <div style={{ textAlign: "center", marginBottom: "24px" }}>
