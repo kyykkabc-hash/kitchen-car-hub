@@ -6,6 +6,10 @@ export const runtime = 'nodejs'
 
 export async function POST(request: Request) {
   try {
+    console.log('SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+    console.log('SUPABASE_KEY exists:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+    console.log('RESEND_KEY exists:', !!process.env.RESEND_API_KEY)
+
     const body = await request.json()
     const { name, email, category, message } = body
 
