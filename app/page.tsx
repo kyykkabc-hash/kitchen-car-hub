@@ -116,12 +116,23 @@ export default async function Home() {
         <p style={{ fontSize: '0.8rem', opacity: 0.85, marginBottom: '16px' }}>
           新着の出店募集をLINEでお知らせします
         </p>
-        <a href="https://lin.ee/Y4TzTKX" style={{ display: 'inline-block' }}>
-          <img
-            src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png"
-            alt="友だち追加"
-            style={{ height: '44px', width: 'auto' }}
-          />
+        <a href="https://lin.ee/Y4TzTKX" style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '8px',
+          backgroundColor: 'white',
+          color: '#06C755',
+          padding: '10px 24px',
+          borderRadius: '9999px',
+          fontWeight: 'bold',
+          fontSize: '1rem',
+          textDecoration: 'none',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+        }}>
+          <svg viewBox="0 0 24 24" style={{ width: '22px', height: '22px', fill: '#06C755' }}>
+            <path d="M12 2C6.48 2 2 6.03 2 11c0 3.07 1.68 5.78 4.27 7.48L5.5 22l4.05-2.13C10.31 20.27 11.14 20.4 12 20.4c5.52 0 10-4.03 10-9S17.52 2 12 2z"/>
+          </svg>
+          友だち追加
         </a>
       </section>
 
