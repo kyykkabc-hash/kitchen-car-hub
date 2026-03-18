@@ -129,8 +129,9 @@ export default async function Home() {
           textDecoration: 'none',
           boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
         }}>
-          <svg viewBox="0 0 24 24" style={{ width: '22px', height: '22px', fill: '#06C755' }}>
-            <path d="M12 2C6.48 2 2 6.03 2 11c0 3.07 1.68 5.78 4.27 7.48L5.5 22l4.05-2.13C10.31 20.27 11.14 20.4 12 20.4c5.52 0 10-4.03 10-9S17.52 2 12 2z"/>
+          <svg viewBox="0 0 40 40" style={{ width: '22px', height: '22px' }}>
+            <circle cx="20" cy="20" r="20" fill="#06C755"/>
+            <text x="20" y="26" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">LINE</text>
           </svg>
           友だち追加
         </a>
