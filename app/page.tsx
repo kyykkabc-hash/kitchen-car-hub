@@ -74,13 +74,13 @@ export default async function Home() {
         margin: '32px 16px',
         textAlign: 'center'
       }}>
-        <p style={{ fontSize: '0.8rem', color: '#9ca3af', marginBottom: '4px' }}>
+        <p style={{ fontSize: '0.8rem', color: '#6b7280', marginBottom: '4px' }}>
           マルシェ・イベントを開催している方へ
         </p>
         <h2 style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#0ea5e9', marginBottom: '8px' }}>
           主催者の方へ
         </h2>
-        <p style={{ fontSize: '0.85rem', color: '#6b7280', marginBottom: '16px' }}>
+        <p style={{ fontSize: '0.85rem', color: '#374151', marginBottom: '16px' }}>
           出店募集情報を無料で掲載できます。<br />
           多くの出店者にリーチしましょう。
         </p>
